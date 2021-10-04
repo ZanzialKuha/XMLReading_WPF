@@ -5,25 +5,31 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:XMLReading_WPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="550" Width="800">
     <Grid>
-        <TextBox x:Name="XMLContent" Margin="12,115,12,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="180" Text="&lt;Отсутствует файл для предпросмотра&gt;" InputScope="Xml"/>
+        <TextBox x:Name="XMLContent" Margin="12,230,12,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="180" Text="&lt;Отсутствует файл для предпросмотра&gt;" InputScope="Xml"/>
         <GroupBox Header="Выберите источник данных" Margin="10,10,0,10" VerticalAlignment="Top" HorizontalAlignment="Left" Width="385" Height="100">
-            <StackPanel>
-                <RadioButton x:Name="RB1" Content="Корневой каталог" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="16" IsChecked="True" Checked="RB1_Checked" />
-                <RadioButton x:Name="RB2" Content="Выбрать локальный каталог" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" Height="16" Checked="RB2_Checked" />
+            <StackPanel HorizontalAlignment="Stretch">
+                <RadioButton x:Name="RBSource1" Content="Корневой каталог" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="16" IsChecked="True" Checked="RBSource1_Checked" />
+                <RadioButton x:Name="RBSource2" Content="Выбрать локальный каталог" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" Height="16" Checked="RBSource2_Checked" />
+                <TextBox x:Name="PathSource" TextWrapping="NoWrap" Height="20" HorizontalAlignment="Stretch" VerticalAlignment="Top" IsEnabled="False" Margin="10,5,25,0"/>
+                <Button x:Name="BttnSource" Content="..." Click="BttnSource_Click" Width="20" Height="20" Margin="5,-20,5,0" IsEnabled="False" HorizontalAlignment="Right"/>
             </StackPanel>
         </GroupBox>
-        <StackPanel HorizontalAlignment="Left" Margin="26,81,0,0" Orientation="Horizontal" VerticalAlignment="Top" Width="359" Height="20">
-            <TextBox x:Name="Path" TextWrapping="NoWrap" Height="20" HorizontalAlignment="Stretch" VerticalAlignment="Top" Width="334" IsEnabled="False"/>
-            <Button x:Name="Bttn1" Content="..." Click="Button_Click" Width="20" Height="20" Margin="5,0,0,0" IsEnabled="False" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        </StackPanel>
-        <Button Content="Обработать файл" Margin="0,300,12,0" VerticalAlignment="Top" Width="150" HorizontalAlignment="Right" Click="Button_Click_1"/>
+        <Button Content="Обработать файл" Margin="0,415,12,0" VerticalAlignment="Top" Width="150" HorizontalAlignment="Right" Click="Button_Click_1"/>
         <GroupBox Header="Фильтр" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,10,10" Width="385" Height="100">
             <TextBox x:Name="Condition" Margin="10,10,10,0" Text="REGIONCODE=&quot;61&quot;" TextWrapping="Wrap" Height="20" VerticalAlignment="Top"/>
         </GroupBox>
         <StatusBar VerticalAlignment="Bottom" Height="20">
             <Label x:Name="pbStatus" Content="" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Width="800" VerticalAlignment="Bottom" Height="20" Margin="-2,0,0,-2" Padding="3,3,0,0"/>
         </StatusBar>
+        <GroupBox Header="Выберите метод сохранения результата" Margin="10,115,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="385" Height="100">
+            <StackPanel>
+                <RadioButton x:Name="RBNew1" Content="Корневой каталог" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="16" IsChecked="True" Checked="RBNew1_Checked" />
+                <RadioButton x:Name="RBNew2" Content="Выбрать локальный каталог" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" Height="16" Checked="RBNew2_Checked" />
+                <TextBox x:Name="PathNew" TextWrapping="NoWrap" Height="20" HorizontalAlignment="Stretch" VerticalAlignment="Top" IsEnabled="False" Margin="10,5,25,0"/>
+                <Button x:Name="BttnNew" Content="..." Click="BttnNew_Click" Width="20" Height="20" Margin="5,-20,5,0" IsEnabled="False" HorizontalAlignment="Right"/>
+            </StackPanel>
+        </GroupBox>
     </Grid>
 </Window>

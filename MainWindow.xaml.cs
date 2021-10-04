@@ -26,7 +26,7 @@ namespace XMLReading_WPF
         {
             InitializeComponent();
         }
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void BttnSource_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
             dlg.FileName = "Document"; // дефолтное имя файла
@@ -41,43 +41,70 @@ namespace XMLReading_WPF
             {
                 // открыли документ
                 string filename = dlg.FileName;
-                Path.Text = dlg.FileName;
+                PathSource.Text = dlg.FileName;
+                PathNew.Text = System.IO.Path.GetDirectoryName(dlg.FileName) + "\\Save.XML";
 
                 // выведем превью
-                XMLContent_PreviewXML(Path.Text);
+                XMLContent_PreviewXML(PathSource.Text);
             }
         }
-        private void RB1_Checked(object sender, RoutedEventArgs e)
+        private void BttnNew_Click(object sender, RoutedEventArgs e)
         {
-            if (Path != null)
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+            dlg.FileName = "Document"; // дефолтное имя файла
+            dlg.DefaultExt = ".xml"; // дефолтное расширение
+            dlg.Filter = "Файл формата (.xml)|*.xml"; // фильтр по расширению
+
+            // Отображаем диалог пользователю
+            Nullable<bool> result = dlg.ShowDialog();
+
+            // результат
+            if (result == true)
             {
-                Path.Text = "";
-                Path.IsEnabled = false;
+                // открыли документ
+                string filename = dlg.FileName;
+                PathNew.Text = dlg.FileName;
             }
-            if (Bttn1 != null)
-                Bttn1.IsEnabled = false;
+        }
+        private void RBSource1_Checked(object sender, RoutedEventArgs e)
+        {
+            if (PathSource != null)
+            {
+                PathSource.Text = "";
+                PathSource.IsEnabled = false;
+            }
+            if (BttnSource != null)
+                BttnSource.IsEnabled = false;
 
             // выведем превью
             XMLContent_PreviewXML("Load.xml");
         }
 
-        private void RB2_Checked(object sender, RoutedEventArgs e)
+        private void RBSource2_Checked(object sender, RoutedEventArgs e)
         {
-            Path.IsEnabled = true;
-            Bttn1.IsEnabled = true;
+            PathSource.IsEnabled = true;
+            BttnSource.IsEnabled = true;
+        }
+        private void RBNew1_Checked(object sender, RoutedEventArgs e)
+        {
+            if (PathNew != null)
+            {
+                PathNew.Text = "";
+                PathNew.IsEnabled = false;
+            }
+            if (BttnNew != null)
+                BttnNew.IsEnabled = false;
+        }
+
+        private void RBNew2_Checked(object sender, RoutedEventArgs e)
+        {
+            PathNew.IsEnabled = true;
+            BttnNew.IsEnabled = true;
         }
         private void XMLContent_PreviewXML(string pathXML)
         {
             try
             {
-                /*
-                FileStream fsSource = new FileStream(pathXML, FileMode.Open, FileAccess.Read);
-                byte[] bytes = new byte[2000]; // промежуточный массив для чтения потока
-                fsSource.Read(bytes, 0, 2000);
-                XMLContent.Text = Encoding.Default.GetString(bytes).Replace("><", ">\n    <");
-                fsSource.Close();
-*/
-
                 LoadObj_File fsSource = new LoadObj_File(pathXML);
                 if (fsSource.fsSource != null)
                 {
@@ -113,10 +140,16 @@ namespace XMLReading_WPF
             };
 
             int variantLoad = 0;
-            if (RB1.IsChecked == true)
+            if (RBSource1.IsChecked == true)
                 variantLoad = 0;
-            else if (RB2.IsChecked == true)
+            else if (RBSource2.IsChecked == true)
                 variantLoad = 1;
+
+            int variantSave = 0;
+            if (RBSource1.IsChecked == true)
+                variantSave = 0;
+            else if (RBSource2.IsChecked == true)
+                variantSave = 1;
 
             if (variantLoad > -1 && variantLoad < load.Length)
             {
@@ -125,11 +158,12 @@ namespace XMLReading_WPF
 
                 Dictionary<string, string> dictArgs = new Dictionary<string, string>
                 {
-                    ["pathSource"] = Path.Text
+                    ["pathSource"] = PathSource.Text,
+                    ["pathNew"]    = PathNew.Text
                 };
 
                 load[variantLoad].Load(dictArgs, out fsSource);
-                save[0].Save(dictArgs, out fsNew);
+                save[variantSave].Save(dictArgs, out fsNew);
 
                 if (fsSource == null || fsNew == null)
                 {
