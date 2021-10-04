@@ -70,11 +70,26 @@ namespace XMLReading_WPF
         {
             try
             {
+                /*
                 FileStream fsSource = new FileStream(pathXML, FileMode.Open, FileAccess.Read);
                 byte[] bytes = new byte[2000]; // промежуточный массив для чтения потока
                 fsSource.Read(bytes, 0, 2000);
                 XMLContent.Text = Encoding.Default.GetString(bytes).Replace("><", ">\n    <");
                 fsSource.Close();
+*/
+
+                LoadObj_File fsSource = new LoadObj_File(pathXML);
+                if (fsSource.fsSource != null)
+                {
+
+                    fsSource.Read(2000);
+                    XMLContent.Text = fsSource.Text.Replace("><", ">\n    <");
+                    fsSource.Close();
+                }
+                else
+                    XMLContent.Text = "<Отсутствует файл для предпросмотра>";
+
+
             }
             catch
             {
@@ -90,22 +105,31 @@ namespace XMLReading_WPF
                 new LoadLocalFile()
             };
 
-            int variant = 0;
-            if (RB1.IsChecked == true)
-                variant = 0;
-            else if (RB2.IsChecked == true)
-                variant = 1;
-
-            if (variant > -1 && variant < load.Length)
+            ISaveFile[] save = new ISaveFile[]
             {
-                FileStream fsSource, fsNew;
+                new SaveDefault(),
+                new SaveLocalFile(),
+                new SaveSQL()
+            };
+
+            int variantLoad = 0;
+            if (RB1.IsChecked == true)
+                variantLoad = 0;
+            else if (RB2.IsChecked == true)
+                variantLoad = 1;
+
+            if (variantLoad > -1 && variantLoad < load.Length)
+            {
+                LoadObj fsSource;
+                SaveObj fsNew;
 
                 Dictionary<string, string> dictArgs = new Dictionary<string, string>
                 {
-                    ["path"] = Path.Text
+                    ["pathSource"] = Path.Text
                 };
 
-                load[variant].Load(dictArgs, out fsSource, out fsNew);
+                load[variantLoad].Load(dictArgs, out fsSource);
+                save[0].Save(dictArgs, out fsNew);
 
                 if (fsSource == null || fsNew == null)
                 {
@@ -113,21 +137,13 @@ namespace XMLReading_WPF
                 }
                 else
                 {
-                    // запустим выполнение асинхронно и будем отображать статус операции
-                    //BackgroundWorker worker = new BackgroundWorker();
-                    //worker.WorkerReportsProgress = true;
-                    //worker.DoWork += worker_DoWork;
-                    //worker.ProgressChanged += worker_ProgressChanged;
-
-                    //worker.RunWorkerAsync();
-
                     var progress = new Progress<string>(s => pbStatus.Content = s);
 
                     Process process = new Process(fsSource, fsNew, Condition.Text);
                     await Task.Run(() => process.XMLReading(progress));
-                    //;
 
                     MessageBox.Show("Операция завершена");
+                    pbStatus.Content = "";
                 }
             }
             else
@@ -135,20 +151,5 @@ namespace XMLReading_WPF
                 MessageBox.Show("Неккоректный выбор варианта.");
             }
         }
-        //void worker_DoWork(object sender, DoWorkEventArgs e)
-        //{
-
-
-        //    //for (int i = 0; i < 100; i++)
-        //    //{
-        //    //    ;
-        //    //    Thread.Sleep(100);
-        //    //}
-        //}
-
-        //void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        //{
-        //    pbStatus.Value = e.ProgressPercentage;
-        //}
     }
 }
