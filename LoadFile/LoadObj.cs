@@ -4,6 +4,7 @@
     {
         public long Length { get; set; }
         public string Text { get; set; }
+        public bool IsReady { get; protected set; } = false;
         public LoadObj()
         {
         }

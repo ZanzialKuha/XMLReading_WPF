@@ -177,7 +177,7 @@ namespace XMLReading_WPF
                 load[variantLoad].Load(dictArgs, out fsSource);
                 save[variantSave].Save(dictArgs, out fsNew);
 
-                if (fsSource == null || fsNew == null)
+                if (fsSource.IsReady == false || fsNew.IsReady == false)
                 {
                     MessageBox.Show("Операция прервана");
                 }

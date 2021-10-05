@@ -18,11 +18,12 @@ namespace XMLReading_WPF
             {
                 fsSource = new FileStream(pathSource, FileMode.Open, FileAccess.Read);
                 Length = fsSource.Length;
+                IsReady = true;
             }
             catch
             {
                 MessageBox.Show($"Не удалось открыть файл \"{pathSource}\"");
-                fsSource = null;
+                IsReady = false;
             }
         }
         public override int Read(int readSize = 10000000)

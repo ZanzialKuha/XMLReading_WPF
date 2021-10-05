@@ -2,6 +2,7 @@
 {
     class SaveObj
     {
+        public bool IsReady { get; protected set; } = false;
         public SaveObj()
         {
         }

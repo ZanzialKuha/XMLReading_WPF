@@ -7,8 +7,8 @@ namespace XMLReading_WPF
 {
     class Process
     {
-        public LoadObj fsSource { get; set; }
-        public SaveObj fsNew { get; set; }
+        private LoadObj fsSource { get; set; }
+        private SaveObj fsNew { get; set; }
         public string condition { get; set; }
 
         private static int sizeOfBlock = 1000;       // размер блока для поиска

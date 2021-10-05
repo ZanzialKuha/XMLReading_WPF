@@ -1,15 +1,21 @@
-﻿using System.Data.SqlClient;
+﻿using System.Data;
+using System.Data.SqlClient;
 
 namespace XMLReading_WPF
 {
     class SaveObj_SQL : SaveObj
     {
-        public SqlConnection connection { get; set; }
+        private SqlConnection connection { get; set; }
         private string XML { get; set; }
         public SaveObj_SQL(string connectionString)
         {
             connection = new SqlConnection(connectionString);
             connection.Open();
+
+            if (connection.State == ConnectionState.Open)
+                IsReady = true;
+            else 
+                IsReady = false;
         }
         public override void Add(string text)
         {
