@@ -94,12 +94,21 @@ namespace XMLReading_WPF
             }
             if (BttnNew != null)
                 BttnNew.IsEnabled = false;
+            if (ServerNew != null)
+                ServerNew.IsEnabled = false;
         }
 
         private void RBNew2_Checked(object sender, RoutedEventArgs e)
         {
             PathNew.IsEnabled = true;
             BttnNew.IsEnabled = true;
+            ServerNew.IsEnabled = false;
+        }
+        private void RBNew3_Checked(object sender, RoutedEventArgs e)
+        {
+            PathNew.IsEnabled = false;
+            BttnNew.IsEnabled = false;
+            ServerNew.IsEnabled = true;
         }
         private void XMLContent_PreviewXML(string pathXML)
         {
@@ -146,10 +155,12 @@ namespace XMLReading_WPF
                 variantLoad = 1;
 
             int variantSave = 0;
-            if (RBSource1.IsChecked == true)
+            if (RBNew1.IsChecked == true)
                 variantSave = 0;
-            else if (RBSource2.IsChecked == true)
+            else if (RBNew2.IsChecked == true)
                 variantSave = 1;
+            else if (RBNew3.IsChecked == true)
+                variantSave = 2;
 
             if (variantLoad > -1 && variantLoad < load.Length)
             {
@@ -159,7 +170,8 @@ namespace XMLReading_WPF
                 Dictionary<string, string> dictArgs = new Dictionary<string, string>
                 {
                     ["pathSource"] = PathSource.Text,
-                    ["pathNew"]    = PathNew.Text
+                    ["pathNew"] = PathNew.Text,
+                    ["ServerSettings"] = ServerNew.Text
                 };
 
                 load[variantLoad].Load(dictArgs, out fsSource);
