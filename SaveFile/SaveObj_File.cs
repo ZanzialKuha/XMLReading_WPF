@@ -30,7 +30,7 @@ namespace XMLReading_WPF
         {
             fsNew.Flush();
         }
-        public override void Finish()
+        public override void Close()
         {
             fsNew.Write(Encoding.Default.GetBytes("</Houses>"));
             fsNew.Close();

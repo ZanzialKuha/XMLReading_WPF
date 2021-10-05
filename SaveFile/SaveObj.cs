@@ -13,7 +13,7 @@
         {
 
         }
-        public virtual void Finish()
+        public virtual void Close()
         {
         }
     }

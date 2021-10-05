@@ -47,7 +47,7 @@ namespace XMLReading_WPF
                 }
             }
 
-            fsNew.Finish();
+            fsNew.Close();
             fsSource.Close();
             Console.WriteLine($"Всего прочитано {numBytesRead:n}");
         }

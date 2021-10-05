@@ -54,7 +54,7 @@ namespace XMLReading_WPF
             command.ExecuteNonQuery();
             XML = "";
         }
-        public override void Finish()
+        public override void Close()
         {
             connection.Close();
         }
